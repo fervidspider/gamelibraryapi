@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Builder;
+using GameLibraryApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,28 +17,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+List<Game> games =
+[
+    new() { Id = 1, Title = "The Legend of Zelda: Breath of the Wild", Edition = "Standard", Platform = "Nintendo Switch", IsOwnedPhysical = true, IsOwnedDigital = false },
+    new() { Id = 2, Title = "God of War", Edition = "Deluxe", Platform = "PlayStation 4", IsOwnedPhysical = false, IsOwnedDigital = true },
+    new() { Id = 3, Title = "Halo Infinite", Edition = "Standard", Platform = "Xbox Series X", IsOwnedPhysical = true, IsOwnedDigital = true },
+    new() { Id = 4, Title = "Cyberpunk 2077", Edition = "Collector's Edition", Platform = "PC", IsOwnedPhysical = false, IsOwnedDigital = true },
+    new() { Id = 5, Title = "Super Mario Odyssey", Edition = "Standard", Platform = "Nintendo Switch", IsOwnedPhysical = true, IsOwnedDigital = false }
+];
+
+app.MapGet("/games", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+
+    return Results.Ok(games);
+
 })
-.WithName("GetWeatherForecast");
+.WithName("GetGames");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

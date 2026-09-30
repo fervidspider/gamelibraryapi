@@ -1,6 +1,6 @@
 @gamelibraryapi_HostAddress = http://localhost:5173
 
-GET {{gamelibraryapi_HostAddress}}/weatherforecast/
+GET {{gamelibraryapi_HostAddress}}/games/
 Accept: application/json
 
 ###
